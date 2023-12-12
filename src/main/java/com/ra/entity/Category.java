@@ -1,9 +1,9 @@
 package com.ra.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -13,6 +13,8 @@ public class Category {
     private String categoryName;
     private Boolean categoryStatus;
 
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    private List<Product> products;
     public Category() {
     }
 
@@ -40,4 +42,11 @@ public class Category {
         this.categoryStatus = categoryStatus;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }
