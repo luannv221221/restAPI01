@@ -1,5 +1,6 @@
 package com.ra.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class Category {
     private Boolean categoryStatus;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @Transient
+//    @JsonIgnore
     private List<Product> products;
     public Category() {
     }
