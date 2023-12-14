@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <input type="text" placeholder="Nhap ten" id="categoryName">
+        <br>
+        <button id="btn">ADD</button>
+    </form>
+
+    <ul id="hung">
+        
+    </ul>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const getDAta = ()=>{
+            $.ajax({
+            method:"GET",
+            url:"http://localhost:8080/category",
+            dataType:"JSON",
+            success:(response)=>{
+                let _html = ``;
+                response.forEach(element => {
+                    _html += `<li><a href="">${element.categoryName}</a></li>`
+                });
+                $('#hung').html(_html);
+            },
+            error:(err)=>{
+                console.log(err);
+            }
+        });
+        }
+       
+        getDAta();
+
+    </script>
+    <script>
+        $("#btn").click(function(e){
+            // laays duoc gia tri tu input 
+            let category_name = $('#categoryName').val();
+            let _data = {categoryName:category_name,categoryStatus:1};
+            _data = JSON.stringify(_data);
+            $.ajax({
+                method:"POST",
+                url:"http://localhost:8080/category",
+                dataType:"JSON",
+                contentType:"application/json",
+                data:_data,
+                success:(response)=>{
+                    console.log(response);
+                    Swal.fire({
+                        position: "top-center",
+                        icon: "success",
+                        title: "Theem moi thanh cong",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    getDAta();
+                },
+                error:(err)=>{
+                    console.log(err);
+                }
+            })
+            e.preventDefault();
+        })
+    </script>
+</body>
+</html>
