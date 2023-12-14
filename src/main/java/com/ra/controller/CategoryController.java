@@ -32,12 +32,14 @@ public class CategoryController {
         return  new ResponseEntity<>(category,HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Category> create(@RequestBody Category category){
-        Category categoryNew = categoryService.save(category);
-        if(categoryNew == null){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> create(@RequestBody Category category){
+        Category categoryNew;
+        try {
+            categoryNew = categoryService.save(category);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return  new ResponseEntity<>(category,HttpStatus.OK);
+        return  new ResponseEntity<>(categoryNew,HttpStatus.OK);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Category> update(@RequestBody Category category,@PathVariable("id") Integer id){
